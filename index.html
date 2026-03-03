@@ -96,30 +96,18 @@
     width: 500px;
     margin-bottom: 1.5rem;
     animation: fadeIn 1.2s ease-out;
-    position: relative;
-  }
-
-  .logo-wrap::after {
-    content: '';
-    display: block;
-    padding-bottom: 25%;
   }
 
   .logo-wrap img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: opacity var(--transition);
+    height: auto;
+    display: none;
   }
 
-  .logo-dark { opacity: 1; }
-  .logo-light { opacity: 0; }
-  [data-theme="light"] .logo-dark { opacity: 0; }
-  [data-theme="light"] .logo-light { opacity: 1; }
+  .logo-dark { display: block !important; }
+  .logo-light { display: none !important; }
+  [data-theme="light"] .logo-dark { display: none !important; }
+  [data-theme="light"] .logo-light { display: block !important; }
 
   .status {
     display: inline-flex;
