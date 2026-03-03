@@ -56,15 +56,11 @@
     50% { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
   }
 
-  body::after {
-    content: '';
+  canvas#grid {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(var(--text-muted) 1px, transparent 1px),
-      linear-gradient(90deg, var(--text-muted) 1px, transparent 1px);
-    background-size: 80px 80px;
-    opacity: 0.04;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
   }
 
@@ -88,7 +84,8 @@
     width: 100%;
     height: auto;
     display: block;
-    background: #ffffff;
+    filter: drop-shadow(0 0 20px rgba(45, 198, 83, 0.15)) drop-shadow(0 0 60px rgba(45, 198, 83, 0.06));
+    background: rgba(255, 255, 255, 0.06);
     border-radius: 12px;
     padding: 16px 24px;
   }
@@ -186,6 +183,8 @@
 </head>
 <body>
 
+<canvas id="grid"></canvas>
+
 <div class="corner-mark tl">RESUI / 2026</div>
 <div class="corner-mark br">Renewability &amp; Sustainability Initiative</div>
 
@@ -197,7 +196,7 @@
   <div class="status">Under Development</div>
 
   <p class="tagline">
-    Building infrastructure for sustainable engineering knowledge across universities.
+    Open-access infrastructure for renewable and sustainable engineering knowledge.
   </p>
 
   <div class="divider"></div>
@@ -206,6 +205,120 @@
     <a href="mailto:contact@resui.org">contact@resui.org</a>
   </div>
 </div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('grid');
+  const ctx = canvas.getContext('2d');
+  const spacing = 40;
+  const glowRadius = 280;
+  let mouse = { x: -1000, y: -1000 };
+  let smooth = { x: -1000, y: -1000 };
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  document.addEventListener('mousemove', function(e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+  document.addEventListener('mouseleave', function() {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+  document.addEventListener('touchmove', function(e) {
+    mouse.x = e.touches[0].clientX;
+    mouse.y = e.touches[0].clientY;
+  });
+  document.addEventListener('touchend', function() {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  function distToSegment(px, py, x1, y1, x2, y2) {
+    const dx = x2 - x1, dy = y2 - y1;
+    const len2 = dx * dx + dy * dy;
+    if (len2 === 0) return Math.hypot(px - x1, py - y1);
+    let t = ((px - x1) * dx + (py - y1) * dy) / len2;
+    t = Math.max(0, Math.min(1, t));
+    return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+  }
+
+  function draw() {
+    smooth.x += (mouse.x - smooth.x) * 0.1;
+    smooth.y += (mouse.y - smooth.y) * 0.1;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const w = canvas.width;
+    const h = canvas.height;
+    const mx = smooth.x;
+    const my = smooth.y;
+
+    // Draw vertical lines
+    for (let x = 0; x <= w; x += spacing) {
+      const dist = Math.abs(x - mx);
+      if (dist > glowRadius) {
+        ctx.strokeStyle = 'rgba(58, 58, 69, 0.04)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      } else {
+        // Draw segments with varying brightness near mouse
+        const segSize = 4;
+        for (let y = 0; y < h; y += segSize) {
+          const d = Math.hypot(x - mx, y + segSize / 2 - my);
+          const intensity = Math.max(0, 1 - d / glowRadius);
+          const alpha = 0.04 + intensity * 0.15;
+          const green = Math.round(58 + intensity * 80);
+          ctx.strokeStyle = `rgba(${Math.round(intensity * 15)}, ${green}, ${Math.round(58 + intensity * 12)}, ${alpha})`;
+          ctx.lineWidth = 1 + intensity * 0.3;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x, y + segSize);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw horizontal lines
+    for (let y = 0; y <= h; y += spacing) {
+      const dist = Math.abs(y - my);
+      if (dist > glowRadius) {
+        ctx.strokeStyle = 'rgba(58, 58, 69, 0.04)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      } else {
+        const segSize = 4;
+        for (let x = 0; x < w; x += segSize) {
+          const d = Math.hypot(x + segSize / 2 - mx, y - my);
+          const intensity = Math.max(0, 1 - d / glowRadius);
+          const alpha = 0.04 + intensity * 0.15;
+          const green = Math.round(58 + intensity * 80);
+          ctx.strokeStyle = `rgba(${Math.round(intensity * 15)}, ${green}, ${Math.round(58 + intensity * 12)}, ${alpha})`;
+          ctx.lineWidth = 1 + intensity * 0.3;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + segSize, y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
 
 </body>
 </html>
