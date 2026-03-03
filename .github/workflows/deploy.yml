@@ -1,0 +1,44 @@
+name: Deploy to Hostinger
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/
+```
+
+**4. Get your FTP credentials from Hostinger**
+
+- Log into `hpanel.hostinger.com`
+- Click on `resui.org` under your hosting plans
+- In the left sidebar go to **Files > FTP Accounts**
+- You'll see a table with your FTP details. You need three things:
+  - **FTP Host** (something like `ftp.resui.org` or an IP address)
+  - **FTP Username** (usually something like `u123456789`)
+  - **FTP Password** (if you don't have one, create a new FTP account there)
+
+If there's no FTP account yet, click **Create FTP Account**, set a username and password, and set the directory to `/public_html`.
+
+**5. Add the secrets to GitHub**
+
+- Go to `github.com/resui-org/resui-site/settings/secrets/actions`
+- Click **New repository secret** three times, adding:
+  - Name: `FTP_SERVER` Value: your FTP host from step 4
+  - Name: `FTP_USERNAME` Value: your FTP username from step 4
+  - Name: `FTP_PASSWORD` Value: your FTP password from step 4
+
+**6. Push everything**
+```
+git add .
+git commit -m "initial site"
+git push origin main

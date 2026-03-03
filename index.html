@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RESUI — Renewability and Sustainability Initiative</title>
+<meta name="description" content="Building infrastructure for sustainable engineering knowledge across universities. Coming soon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #2DC653;
+    --green-dim: rgba(45, 198, 83, 0.12);
+    --green-glow: rgba(45, 198, 83, 0.06);
+    --bg: #060608;
+    --surface: #0c0c10;
+    --text: #e8e8ec;
+    --text-dim: #6b6b78;
+    --text-muted: #3a3a45;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+    pointer-events: none;
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.7; transform: translateX(-50%) scale(1.1); }
+  }
+
+  body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--text-muted) 1px, transparent 1px),
+      linear-gradient(90deg, var(--text-muted) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .logo-wrap {
+    width: 280px;
+    margin-bottom: 3rem;
+    animation: fadeIn 1.2s ease-out;
+  }
+
+  .logo-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid rgba(45, 198, 83, 0.25);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 2rem;
+    animation: fadeIn 1.2s ease-out 0.3s both;
+  }
+
+  .status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .tagline {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text-dim);
+    line-height: 1.6;
+    max-width: 420px;
+    margin-bottom: 3rem;
+    animation: fadeIn 1.2s ease-out 0.5s both;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--text-muted);
+    margin-bottom: 2rem;
+    animation: fadeIn 1.2s ease-out 0.7s both;
+  }
+
+  .contact {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+    animation: fadeIn 1.2s ease-out 0.9s both;
+  }
+
+  .contact a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(45, 198, 83, 0.3);
+    transition: border-color 0.3s;
+  }
+
+  .contact a:hover {
+    border-color: var(--green);
+  }
+
+  .corner-mark {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    z-index: 1;
+  }
+
+  .corner-mark.tl { top: 2rem; left: 2rem; }
+  .corner-mark.br { bottom: 2rem; right: 2rem; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .logo-wrap { width: 200px; }
+    .tagline { font-size: 15px; padding: 0 1rem; }
+    .corner-mark { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="corner-mark tl">RESUI / 2026</div>
+<div class="corner-mark br">Renewability &amp; Sustainability Initiative</div>
+
+<div class="content">
+  <div class="logo-wrap">
+    <img src="RESUI.png" alt="RESUI">
+  </div>
+
+  <div class="status">Under Development</div>
+
+  <p class="tagline">
+    Building infrastructure for sustainable engineering knowledge across universities.
+  </p>
+
+  <div class="divider"></div>
+
+  <div class="contact">
+    <a href="mailto:ortakcialp@gmail.com">ortakcialp@gmail.com</a>
+  </div>
+</div>
+
+</body>
+</html>
